@@ -15,7 +15,7 @@ def addnewrackstodb(db,data):
         if(data.cell(row,4).value == "Storage"):
 
             cur_node['arrayType'] = data.cell(row,5).value + " " + data.cell(row,7).value
-            cur_node['serialNumber'] = data.cell(row,6).value
+            cur_node['serialNumber'] = "'"+data.cell(row,6).value+"'"
             cur_node['osVersion'] = data.cell(row,19).value
             cur_node['vendor'] = data.cell(row,5).value
             cur_node['extramgmtIps'] = data.cell(row,9).value
@@ -49,7 +49,7 @@ def create_storagenode(db,storagedata):
     rackNumber = storagedata['rackNumber']
     db.run('CREATE(n:StorageNode:XDeviceNode {arrayType:$arrayType,serialNumber:$serialNumber,osVersion:$osVersion,vendor:$vendor,extramgmtIps:$extramgmtIps,clusterName:$clusterName,osType:$osType,uNumber:$uNumber,arrayProtocol:$arrayProtocol,name:$name,rackNumber:$rackNumber})', arrayType=arrayType,serialNumber=serialNumber,osVersion=osVersion,vendor=vendor,extramgmtIps=extramgmtIps,
     clusterName=clusterName,osType=osType,uNumber=uNumber,arrayProtocol=arrayProtocol,name=name,rackNumber=rackNumber)
-
+    put_in_rack(db,serialNumber,rackNumber)
 def create_networknode(db,netwrokdata):
     return
 
@@ -61,6 +61,9 @@ def create_xdevicenode(db,xdevicedata):
 
 def create_linkrelation(db,linkdata):
     return
+
+def put_in_rack(db,serialNumber,rackNumber):
+    db.run("MATCH (a:StorageNode),(b:RackNode) WHERE a.serialNumber = '$serialNumber' AND b.name = '$rackNumber' CREATE (a)-[r:IN]->(b) RETURN type(r)",serialNumber=serialNumber,rackNumber=rackNumber)
 wb = load_workbook("SampleDCMap.xlsx")
 data = wb.active
 # data_rows = data.max_row
