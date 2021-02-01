@@ -32,14 +32,16 @@ def add_new_racks_to_db(data):
         cur_node['osType'] = data.cell(row, 19).value
         cur_node['osVersion'] = data.cell(row, 19).value
         cur_node['rackNumber'] = data.cell(row, 1).value
+        cur_node['clusterName'] = data.cell(row, 5).value
         cur_node['unumber'] = data.cell(row, 2).value
 
+
+        # if for each of the cases - storage, server, network and xdevice (like kvm etc)
         if data.cell(row, 4).value == "Storage":
             cur_node['arrayType'] = data.cell(row, 5).value + " " + data.cell(row, 7).value
             # cur_node['arrayType'] = data.cell(row, 7).value
             cur_node['arrayProtocol'] = data.cell(row, 4).value
             cur_node['extramgmtIps'] = data.cell(row, 9).value
-            cur_node['clusterName'] = data.cell(row, 5).value
 
             create_storagenode(cur_node)
 
