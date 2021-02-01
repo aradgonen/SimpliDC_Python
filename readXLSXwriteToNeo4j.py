@@ -44,14 +44,14 @@ def add_new_racks_to_db(data):
             create_storagenode(cur_node)
 
         if data.cell(row, 4).value == "Server":
-            cur_node['fromFactor'] = ""
+            cur_node['fromFactor'] = ''
             cur_node['externalStorage'] = ''
 
             create_servernode(cur_node)
 
         if data.cell(row, 4).value == "Network":
-            cur_node['isLayer2'] = ''
-            cur_node['isLayer3'] = ''
+            cur_node['isLayer2'] = False;
+            cur_node['isLayer3'] = False;
 
             create_networknode(cur_node)
 
@@ -71,7 +71,7 @@ def create_storagenode(storagedata):
 
 
 def create_networknode(netwrokdata):
-    save_to_db_response = requests.post(simplidc_server_url + "/devices/network", data=json.dumps(netwrokdata),
+    save_to_db_response = requests.post(simplidc_server_url + "/devices/networks", data=json.dumps(netwrokdata),
                                         headers=headers)
 
 def create_servernode(serverdata):
