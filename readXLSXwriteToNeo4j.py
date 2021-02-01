@@ -44,7 +44,7 @@ def add_new_racks_to_db(data):
             create_storagenode(cur_node)
 
         if data.cell(row, 4).value == "Server":
-            cur_node['fromFactor'] = ''
+            cur_node['formFactor'] = ''
             cur_node['externalStorage'] = ''
 
             create_servernode(cur_node)
